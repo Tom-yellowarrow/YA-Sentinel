@@ -101,7 +101,7 @@
             }
         },
         "_artifactsLocation": {
-            "defaultValue": "https://raw.githubusercontent.com/Tom-yellowarrow/YA-Sentinel/",
+            "defaultValue": "https://raw.githubusercontent.com/Tom-yellowarrow/YA-Sentinel/LinkedTemplates",
             "type": "String",
             "metadata": {
                 "description": "The location of resources"
