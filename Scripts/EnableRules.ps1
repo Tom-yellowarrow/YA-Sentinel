@@ -16,7 +16,7 @@ $SubscriptionId = $context.Subscription.Id
 Write-Host "Connected to Azure with subscription: " + $context.Subscription
 
 $baseUri = "/subscriptions/${SubscriptionId}/resourceGroups/${ResourceGroup}/providers/Microsoft.OperationalInsights/workspaces/${Workspace}"
-$templatesUri = "$baseUri/providers/Microsoft.SecurityInsights/alertRuleTemplates?api-version=2019-01-01-preview"
+$templatesUri = "$baseUri/providers/Microsoft.SecurityInsights/alertRuleTemplates?api-version=2022-11-01"
 $alertUri = "$baseUri/providers/Microsoft.SecurityInsights/alertRules/"
 
 
@@ -37,7 +37,7 @@ if ($Connectors){
                 if ($connector.connectorId -in $Connectors){
                     #$return += $item.properties
                     $guid = New-Guid
-                    $alertUriGuid = $alertUri + $guid + '?api-version=2020-01-01'
+                    $alertUriGuid = $alertUri + $guid + '?api-version=2022-11-01'
 
                     $properties = @{
                         displayName = $item.properties.displayName
