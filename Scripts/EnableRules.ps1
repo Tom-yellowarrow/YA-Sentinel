@@ -37,7 +37,7 @@ if ($Connectors){
                 if ($connector.connectorId -in $Connectors){
                     #$return += $item.properties
                     $guid = New-Guid
-                    $alertUriGuid = $alertUri + $guid + '?api-version=2023-02-01-preview'
+                    $alertUriGuid = $alertUri + $guid + '?api-version=2022-11-01'
 
                     $properties = @{
                         displayName = $item.properties.displayName
@@ -51,6 +51,7 @@ if ($Connectors){
                         queryPeriod = $item.properties.queryPeriod
                         severity = $item.properties.severity
                         tactics = $item.properties.tactics
+                        techniques = $item.properties.techniques
                         triggerOperator = $item.properties.triggerOperator
                         triggerThreshold = $item.properties.triggerThreshold
                     }
@@ -60,7 +61,7 @@ if ($Connectors){
                     $alertBody | Add-Member -NotePropertyName properties -NotePropertyValue $properties
 
                     try{
-                        Invoke-AzRestMethod -Path $alertUriGuid -Method PUT -Payload ($alertBody | ConvertTo-Json -Depth 3)
+                        Invoke-AzRestMethod -Path $alertUriGuid -Method PUT -Payload ($alertBody | ConvertTo-Json -Depth 99)
                     }
                     catch {
                         Write-Verbose $_
