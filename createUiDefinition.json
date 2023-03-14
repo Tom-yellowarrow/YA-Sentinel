@@ -95,13 +95,16 @@
                                     "label": "Office365",
                                     "value": "Office365"
                                 },
+                                {   "label": "Azure Active Directory",
+                                    "value": "AzureActiveDirectory"
+                                },
                                 {
                                     "label": "Microsoft Defender for Identity",
                                     "value": "MicrosoftDefenderforIdentity"
                                 },
                                 {
                                     "label": "Azure AD Identity Protection",
-                                    "value": "AzureActiveDirectory"
+                                    "value": "AzureActiveDirectoryIdentityProtection"
                                 },
                                 {
                                     "label": "Microsoft Defender for Endpoint",
@@ -187,7 +190,7 @@
                             "required": false,
                             "validationMessage": "Enables rules coming from selected Microsoft security products"
                         },
-                        "visible": "[if(or(contains(steps('dataConnectors').enableDataConnectorsKind,'MicrosoftDefenderforIdentity'),contains(steps('dataConnectors').enableDataConnectorsKind,'AzureActiveDirectoryIdentityProtection'),contains(steps('dataConnectors').enableDataConnectorsKind,'MicrosoftDefenderAdvancedThreatProtection'),contains(steps('dataConnectors').enableDataConnectorsKind,'AzureSecurityCenter'),contains(steps('dataConnectors').enableDataConnectorsKind,'MicrosoftCloudAppSecurity')), true, false)]"
+                        "visible": "[if(or(contains(steps('dataConnectors').enableDataConnectorsKind,'AzureActiveDirectory'),contains(steps('dataConnectors').enableDataConnectorsKind,'MicrosoftDefenderforIdentity'),contains(steps('dataConnectors').enableDataConnectorsKind,'AzureActiveDirectoryIdentityProtection'),contains(steps('dataConnectors').enableDataConnectorsKind,'MicrosoftDefenderAdvancedThreatProtection'),contains(steps('dataConnectors').enableDataConnectorsKind,'AzureSecurityCenter'),contains(steps('dataConnectors').enableDataConnectorsKind,'MicrosoftCloudAppSecurity')), true, false)]"
                     },
                     {
                         "name": "enableMLAlerts",
