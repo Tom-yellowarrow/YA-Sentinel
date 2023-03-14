@@ -53,9 +53,44 @@
         "ascName": "[concat('asc', uniqueString(resourceGroup().id))]",
         "mcasName": "[concat('mcas', uniqueString(resourceGroup().id))]",
         "aadipName": "[concat('aadip', uniqueString(resourceGroup().id))]",
-        "tiName": "[concat('ti', uniqueString(resourceGroup().id))]"
+        "tiName": "[concat('ti', uniqueString(resourceGroup().id))]",
+        "aadName": "[concat('aad', uniqueString(resourceGroup().id))]"
     },
     "resources": [
+        {
+            "condition": "[contains(parameters('dataConnectorsKind'), 'AzureActiveDirectory')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/diagnosticSettings",
+            "apiVersion": "2023-02-01",
+            "location": "[parameters('location')]",
+            "name": "[concat(parameters('workspaceName'),'/Microsoft.SecurityInsights/',variables('aadName'))]",
+            "kind": "AzureActiveDirectory",
+            "properties": {
+                "tenantId": "[parameters('tenantId')]",
+                "dataTypes": {
+                    "signIns": {
+                        "state": "enabled"
+                    },
+                    "auditLogs": {
+                        "state": "enabled"
+                    },
+                    "AADNonInteractiveUserSignInLogs": {
+                        "state": "enabled"
+                    },
+                    "AADServicePrincipalSignInLogs": {
+                        "state": "enabled"
+                    },
+                    "AADManagedIdentitySignInLogs": {
+                        "state": "enabled"
+                    },
+                    "AADUserRiskEvents": {
+                        "state": "enabled"
+                    },
+                    "AADRiskyUsers": {
+                        "state": "enabled"
+                    }
+                }
+            }
+        },
         {
             "condition": "[contains(parameters('dataConnectorsKind'), 'Office365')]",
             "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectors",
@@ -146,36 +181,15 @@
             }
         },
         {
-            "condition": "[contains(parameters('dataConnectorsKind'), 'AzureActiveDirectory')]",
+            "condition": "[contains(parameters('dataConnectorsKind'), 'AzureActiveDirectoryIdentityProtection')]",
             "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectors",
             "apiVersion": "2023-02-01",
             "location": "[parameters('location')]",
             "name": "[concat(parameters('workspaceName'),'/Microsoft.SecurityInsights/',variables('aadipName'))]",
-            "kind": "AzureActiveDirectory",
+            "kind": "AzureActiveDirectoryIdentityProtection",
             "properties": {
                 "tenantId": "[parameters('tenantId')]",
                 "dataTypes": {
-                    "signIns": {
-                        "state": "enabled"
-                    },
-                    "auditLogs": {
-                        "state": "enabled"
-                    },
-                    "AADNonInteractiveUserSignInLogs": {
-                        "state": "enabled"
-                    },
-                    "AADServicePrincipalSignInLogs": {
-                        "state": "enabled"
-                    },
-                    "AADManagedIdentitySignInLogs": {
-                        "state": "enabled"
-                    },
-                    "AADUserRiskEvents": {
-                        "state": "enabled"
-                    },
-                    "AADRiskyUsers": {
-                        "state": "enabled"
-                    },
                     "alerts": {
                         "state": "enabled"
                     }
