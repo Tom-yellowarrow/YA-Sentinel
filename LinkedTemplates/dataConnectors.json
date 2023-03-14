@@ -155,6 +155,27 @@
             "properties": {
                 "tenantId": "[parameters('tenantId')]",
                 "dataTypes": {
+                    "signIns": {
+                        "state": "enabled"
+                    },
+                    "auditLogs": {
+                        "state": "enabled"
+                    },
+                    "AADNonInteractiveUserSignInLogs": {
+                        "state": "enabled"
+                    },
+                    "AADServicePrincipalSignInLogs": {
+                        "state": "enabled"
+                    },
+                    "AADManagedIdentitySignInLogs": {
+                        "state": "enabled"
+                    },
+                    "AADUserRiskEvents": {
+                        "state": "enabled"
+                    },
+                    "AADRiskyUsers": {
+                        "state": "enabled"
+                    },
                     "alerts": {
                         "state": "enabled"
                     }
@@ -169,7 +190,12 @@
             "name": "[concat(parameters('workspaceName'), '/', replace(parameters('subscriptionId'),'-', ''))]",
             "kind": "AzureActivityLog",
             "properties": {
-                "linkedResourceId": "[concat('/subscriptions/', parameters('subscriptionId'), '/providers/microsoft.insights/eventtypes/management')]"
+                "linkedResourceId": "[concat('/subscriptions/', parameters('subscriptionId'), '/providers/microsoft.insights/eventtypes/management')]",
+                "dataTypes": {
+                    "AzureActivity": {
+                        "state": "Enabled"
+                    }
+                }
             }
         },
         {
