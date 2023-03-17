@@ -54,6 +54,7 @@ if ($Connectors) {
                 techniques            = $item.properties.techniques
                 triggerOperator       = $item.properties.triggerOperator
                 triggerThreshold      = $item.properties.triggerThreshold
+                sentinelEntitiesMappings = $item.properties.sentinelEntitiesMappings
             }
 
             $alertBody = @{
