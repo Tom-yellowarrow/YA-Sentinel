@@ -1,12 +1,12 @@
 param(
-    [Parameter(Mandatory=$true)][string]$ResourceGroup,
-    [Parameter(Mandatory=$true)][string]$Workspace,
-    [Parameter(Mandatory=$true)][string[]]$Connectors
+    [Parameter(Mandatory = $true)][string]$ResourceGroup,
+    [Parameter(Mandatory = $true)][string]$Workspace,
+    [Parameter(Mandatory = $true)][string[]]$Connectors
 )
 
 $context = Get-AzContext
 
-if(!$context){
+if (!$context) {
     Connect-AzAccount
     $context = Get-AzContext
 }
@@ -19,7 +19,6 @@ $baseUri = "/subscriptions/${SubscriptionId}/resourceGroups/${ResourceGroup}/pro
 $templatesUri = "$baseUri/providers/Microsoft.SecurityInsights/alertRuleTemplates?api-version=2023-02-01-preview"
 $alertUri = "$baseUri/providers/Microsoft.SecurityInsights/alertRules/"
 
-
 try {
     $alertRulesTemplates = ((Invoke-AzRestMethod -Path $templatesUri -Method GET).Content | ConvertFrom-Json).value
 }
@@ -30,46 +29,46 @@ catch {
 
 $return = @()
 
-if ($Connectors){
-    foreach ($item in $alertRulesTemplates) {
-        if ($item.kind -eq "Scheduled"){
-            foreach ($connector in $item.properties.requiredDataConnectors) {
-                if ($connector.connectorId -in $Connectors){
-                    #$return += $item.properties
-                    $guid = New-Guid
-                    $alertUriGuid = $alertUri + $guid + '?api-version=2022-11-01'
+if ($Connectors) {
+    $scheduledTemplates = $alertRulesTemplates | Where-Object { $_.kind -eq "Scheduled" }
 
-                    $properties = @{
-                        displayName = $item.properties.displayName
-                        enabled = $true
-                        suppressionDuration = "PT5H"
-                        suppressionEnabled = $false
-                        alertRuleTemplateName = $item.name
-                        description = $item.properties.description
-                        query = $item.properties.query
-                        queryFrequency = $item.properties.queryFrequency
-                        queryPeriod = $item.properties.queryPeriod
-                        severity = $item.properties.severity
-                        tactics = $item.properties.tactics
-                        techniques = $item.properties.techniques
-                        triggerOperator = $item.properties.triggerOperator
-                        triggerThreshold = $item.properties.triggerThreshold
-                    }
+    foreach ($item in $scheduledTemplates) {
+        $matchingConnector = $item.properties.requiredDataConnectors | Where-Object { $_.connectorId -in $Connectors }
 
-                    $alertBody = @{}
-                    $alertBody | Add-Member -NotePropertyName kind -NotePropertyValue $item.kind -Force
-                    $alertBody | Add-Member -NotePropertyName properties -NotePropertyValue $properties
+        if ($matchingConnector) {
+            $guid = New-Guid
+            $alertUriGuid = $alertUri + $guid + '?api-version=2023-02-01-preview'
 
-                    try{
-                        Invoke-AzRestMethod -Path $alertUriGuid -Method PUT -Payload ($alertBody | ConvertTo-Json -Depth 99)
-                    }
-                    catch {
-                        Write-Verbose $_
-                        Write-Error "Unable to create alert rule with error code: $($_.Exception.Message)" -ErrorAction Stop
-                    }
+            $properties = @{
+                displayName              = $item.properties.displayName
+                enabled                  = $true
+                suppressionDuration      = "PT5H"
+                suppressionEnabled       = $false
+                alertRuleTemplateName    = $item.name
+                description              = $item.properties.description
+                query                    = $item.properties.query
+                queryFrequency           = $item.properties.queryFrequency
+                queryPeriod              = $item.properties.queryPeriod
+                severity                 = $item.properties.severity
+                entityMapping            = $item.properties.entityMapping
+                sentinelEntitiesMappings = $item.properties.sentinelEntitiesMappings
+                tactics                  = $item.properties.tactics
+                techniques               = $item.properties.techniques
+                triggerOperator          = $item.properties.triggerOperator
+                triggerThreshold         = $item.properties.triggerThreshold
+            }
 
-                    break
-                }
+            $alertBody = @{
+                kind       = $item.kind
+                properties = $properties
+            }
+
+            try {
+                Invoke-AzRestMethod -Path $alertUriGuid -Method PUT -Payload ($alertBody | ConvertTo-Json -Depth 99)
+            }
+            catch {
+                Write-Verbose $_
+                Write-Error "Unable to create alert rule with error code: $($_.Exception.Message)" -ErrorAction Stop
             }
         }
     }
