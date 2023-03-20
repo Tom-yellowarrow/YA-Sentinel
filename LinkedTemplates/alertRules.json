@@ -54,32 +54,15 @@
         "o365RuleId": "[concat('o365', uniqueString(parameters('ruleGuid')))]",
         "fusionRuleId": "[concat('fusion', uniqueString(parameters('ruleGuid')))]",
         "mlbaSshRuleId": "[concat('mlSsh',uniqueString(parameters('ruleGuid')))]",
-        "mlbaRdpRuleId": "[concat('mlRdp',uniqueString(parameters('ruleGuid')))]",
-        "aadRuleId": "[concat('aad', uniqueString(parameters('ruleGuid')))]"
+        "mlbaRdpRuleId": "[concat('mlRdp',uniqueString(parameters('ruleGuid')))]"
 
     },
     "resources": [
         {
             "condition": "[and(contains(parameters('dataConnectorsKind'), 'AzureActiveDirectory'),parameters('enableMicrosoftAlerts'))]",
             "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
-            "name": "[concat(parameters('workspaceName'),'/Microsoft.SecurityInsights/',variables('aadRuleId'))]",
-            "apiVersion": "2023-02-01-preview",
-            "kind": "MicrosoftSecurityIncidentCreation",
-            "location": "[parameters('location')]",
-            "dependsOn": [],
-            "properties": {
-                "alertRuleTemplateName": "532c1811-79ee-4d9f-8d4d-6304c840daa1",
-                "description": "Create incidents based on Azure Active Directory alerts",
-                "displayName": "Create incidents based on all alerts generated in Azure Active Directory",
-                "enabled": true,
-                "productFilter": "Azure Active Directory"
-            }
-        },
-        {
-            "condition": "[and(contains(parameters('dataConnectorsKind'), 'AzureActiveDirectoryIdentityProtection'),parameters('enableMicrosoftAlerts'))]",
-            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
             "name": "[concat(parameters('workspaceName'),'/Microsoft.SecurityInsights/',variables('aadipRuleId'))]",
-            "apiVersion": "2023-02-01-preview",
+            "apiVersion": "2020-01-01",
             "kind": "MicrosoftSecurityIncidentCreation",
             "location": "[parameters('location')]",
             "dependsOn": [],

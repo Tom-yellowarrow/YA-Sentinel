@@ -95,16 +95,13 @@
                                     "label": "Office365",
                                     "value": "Office365"
                                 },
-                                {   "label": "Azure Active Directory",
-                                    "value": "AzureActiveDirectory"
-                                },
                                 {
                                     "label": "Microsoft Defender for Identity",
                                     "value": "MicrosoftDefenderforIdentity"
                                 },
                                 {
                                     "label": "Azure AD Identity Protection",
-                                    "value": "AzureActiveDirectoryIdentityProtection"
+                                    "value": "AzureActiveDirectory"
                                 },
                                 {
                                     "label": "Microsoft Defender for Endpoint",
