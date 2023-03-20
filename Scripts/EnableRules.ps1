@@ -32,10 +32,19 @@ $return = @()
 if ($Connectors) {
     $scheduledTemplates = $alertRulesTemplates | Where-Object { $_.kind -eq "Scheduled" }
 
+    write-output "scheduledTemplates"
+    write-output  $scheduledTemplates
+    Write-output "------------------------------"
+
     foreach ($item in $scheduledTemplates) {
         $matchingConnector = $item.properties.requiredDataConnectors | Where-Object { $_.connectorId -in $Connectors }
-
+        
         if ($matchingConnector) {
+
+            write-output "scheduledTemplates"
+            write-output  $item.properties
+            Write-output "------------------------------"
+
             $guid = New-Guid
             $alertUriGuid = $alertUri + $guid + '?api-version=2023-02-01-preview'
 
@@ -50,14 +59,14 @@ if ($Connectors) {
                 queryFrequency           = $item.properties.queryFrequency
                 queryPeriod              = $item.properties.queryPeriod
                 severity                 = $item.properties.severity
-                entityMapping            = $item.properties.entityMapping
+                entityMappings           = $item.properties.entityMappings
                 sentinelEntitiesMappings = $item.properties.sentinelEntitiesMappings
                 tactics                  = $item.properties.tactics
                 techniques               = $item.properties.techniques
                 triggerOperator          = $item.properties.triggerOperator
                 triggerThreshold         = $item.properties.triggerThreshold
             }
-
+            
             $alertBody = @{
                 kind       = $item.kind
                 properties = $properties
