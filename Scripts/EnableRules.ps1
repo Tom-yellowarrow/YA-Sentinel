@@ -40,21 +40,21 @@ if ($Connectors) {
             $alertUriGuid = $alertUri + $guid + '?api-version=2022-11-01'
 
             $properties = @{
-                displayName              = $item.properties.displayName
-                enabled                  = $true
-                suppressionDuration      = "PT5H"
-                suppressionEnabled       = $false
-                alertRuleTemplateName    = $item.name
-                description              = $item.properties.description
-                query                    = $item.properties.query
-                queryFrequency           = $item.properties.queryFrequency
-                queryPeriod              = $item.properties.queryPeriod
-                severity                 = $item.properties.severity
-                sentinelEntitiesMappings = $item.properties.sentinelEntitiesMappings
-                tactics                  = $item.properties.tactics
-                techniques               = $item.properties.techniques
-                triggerOperator          = $item.properties.triggerOperator
-                triggerThreshold         = $item.properties.triggerThreshold
+                displayName           = $item.properties.displayName
+                enabled               = $true
+                suppressionDuration   = "PT5H"
+                suppressionEnabled    = $false
+                alertRuleTemplateName = $item.name
+                description           = $item.properties.description
+                query                 = $item.properties.query
+                queryFrequency        = $item.properties.queryFrequency
+                queryPeriod           = $item.properties.queryPeriod
+                severity              = $item.properties.severity
+                EntityMapping         = $item.properties.EntityMapping
+                tactics               = $item.properties.tactics
+                techniques            = $item.properties.techniques
+                triggerOperator       = $item.properties.triggerOperator
+                triggerThreshold      = $item.properties.triggerThreshold
             }
 
             $alertBody = @{
