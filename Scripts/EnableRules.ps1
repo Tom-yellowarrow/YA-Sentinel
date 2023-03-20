@@ -32,19 +32,10 @@ $return = @()
 if ($Connectors) {
     $scheduledTemplates = $alertRulesTemplates | Where-Object { $_.kind -eq "Scheduled" }
 
-    write-output "Checking scheduledTemplates"
-    write-output  $scheduledTemplates
-    Write-output "------------------------------"
-
     foreach ($item in $scheduledTemplates) {
         $matchingConnector = $item.properties.requiredDataConnectors | Where-Object { $_.connectorId -in $Connectors }
         
         if ($matchingConnector) {
-
-            write-output "Checking item"
-            write-output  $item.properties
-            Write-output "------------------------------"
-
             $guid = New-Guid
             $alertUriGuid = $alertUri + $guid + '?api-version=2023-02-01-preview'
 
