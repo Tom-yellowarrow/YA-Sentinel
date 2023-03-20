@@ -32,7 +32,7 @@ $return = @()
 if ($Connectors) {
     $scheduledTemplates = $alertRulesTemplates | Where-Object { $_.kind -eq "Scheduled" }
 
-    write-output "scheduledTemplates"
+    write-output "Checking scheduledTemplates"
     write-output  $scheduledTemplates
     Write-output "------------------------------"
 
@@ -41,7 +41,7 @@ if ($Connectors) {
         
         if ($matchingConnector) {
 
-            write-output "scheduledTemplates"
+            write-output "Checking item"
             write-output  $item.properties
             Write-output "------------------------------"
 
